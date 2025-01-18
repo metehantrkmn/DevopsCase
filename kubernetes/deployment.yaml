@@ -1,1 +1,21 @@
 
+# app-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-2048-application
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: my-2048-game
+  template:
+    metadata:
+      labels:
+        app: my-2048-game
+    spec:
+      containers:
+        - name: my-2048-game
+          image: "metehan1171/devops-case:latest"
+          ports:
+            - containerPort: 80
