@@ -48,6 +48,5 @@ jobs:
       - name: Deploy to Kubernetes
         run: |
           kubectl apply -f kubernetes/deployment.yaml
-          kubectl apply -f kubernetes/service.yaml  # If you have a service resource
           kubectl apply -f kubernetes/ingress.yaml  # If you have an ingress resource
           
