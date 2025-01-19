@@ -15,37 +15,20 @@ jobs:
         
       - name: Setup kube config
         run: |
-          # Create kubeconfig directory
           mkdir -p $HOME/.kube
-          
-          # Create kubeconfig file with token authentication
-          cat << EOF > $HOME/.kube/config
-          apiVersion: v1
-          kind: Config
-          clusters:
-          - cluster:
-              server: https://${{ secrets.NGROK_URL }}
-              insecure-skip-tls-verify: true
-            name: docker-desktop
-          contexts:
-          - context:
-              cluster: docker-desktop
-              namespace: bassa
-              user: bassa-user
-            name: bassa-context
-          current-context: bassa-context
-          users:
-          - name: bassa-user
-            user:
-              token: ${{ secrets.BASSA_TOKEN }}
-          EOF
-          
-          # Set proper permissions
+          echo "${{ secrets.KUBE_CONFIG }}" > $HOME/.kube/config
           chmod 600 $HOME/.kube/config
           
-          # Verify configuration
-          kubectl config view
-          kubectl config current-context
+          # Get the current cluster name
+          CLUSTER_NAME=$(kubectl config current-context)
+          
+          # Remove any 'https://' prefix from NGROK_URL if present
+          CLEAN_NGROK_URL=$(echo "${{ secrets.NGROK_URL }}" | sed 's|^https://||')
+          
+          # Update the server URL
+          kubectl config set-cluster ${CLUSTER_NAME} \
+            --server="https://${CLEAN_NGROK_URL}" \
+            --insecure-skip-tls-verify=true
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
@@ -63,21 +46,8 @@ jobs:
           push: true
           tags: metehan1171/devops-case:latest
 
-      - name: Verify Kubernetes Connection
-        run: |
-          echo "Checking cluster access..."
-          kubectl get nodes
-          echo "Checking namespace access..."
-          kubectl get namespace bassa
-          echo "Checking pod access..."
-          kubectl get pods -n bassa
-
       - name: Deploy to Kubernetes
         run: |
-          kubectl apply -f ./kubernetes/deployment.yaml -n bassa
-          kubectl apply -f ./kubernetes/ingress.yaml -n bassa
-          
-          # Verify deployment
-          echo "Checking deployment status..."
-          kubectl get deployments -n bassa
-          kubectl get pods -n bassa
+          kubectl apply -f ./kubernetes/deployment.yaml
+          kubectl apply -f ./kubernetes/ingress.yaml
+
