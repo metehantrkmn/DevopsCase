@@ -22,7 +22,7 @@ To create an environment where development teams can work in an organized and co
 
 For **push** operations to the **dev** and **test** branches, deployments were planned to be executed directly in their respective environments. Additionally, the product would be moved between environments for branch merges.
 
-To implement the approach described above, **GitHub Actions** and **Jenkins** were used separately. However, due to some issues encountered with both solutions, a complete implementation could not be achieved. A locally created cluster was made accessible over the web using **ngrok**. A workflow was created using **GitHub Actions**, but during the flow, communication with the Kubernetes control plane failed due to improper authentication, causing the flow to stop at the deployment stage.
+To implement the approach described above, **GitHub Actions** and **Jenkins** were used separately. However, due to some issues encountered with both solutions, a complete implementation could not be achieved. A locally created cluster was made accessible over the web using **ngrok** which is a tool that allows you to expose a local server or application to the internet securely via a publicly accessible URL. A workflow was created using **GitHub Actions**, but during the flow, communication with the Kubernetes control plane failed due to improper authentication, causing the flow to stop at the deployment stage.
 
 To address this issue, the /.kube/config file was added as a secret in GitHub, and various configurations were tested. However, no successful results were obtained.
 
