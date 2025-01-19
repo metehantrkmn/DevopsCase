@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: my-2048-game
-          image: "metehan1171/devops-case:latest"
+          image: "2048:v1.0"
           ports:
             - containerPort: 80
 
