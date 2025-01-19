@@ -30,14 +30,6 @@ jobs:
             --server="https://${CLEAN_NGROK_URL}" \
             --insecure-skip-tls-verify=true
 
-      - name: Verify kubectl configuration
-        run: |
-          echo "Verifying cluster connection..."
-          echo "Using API server: $(kubectl config view --minify -o jsonpath='{.clusters[0].cluster.server}')"
-          kubectl cluster-info
-          echo "Current context:"
-          kubectl config current-context
-
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
 
