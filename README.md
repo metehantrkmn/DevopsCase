@@ -1,3 +1,3 @@
 # DevopsCase
 
-deneme metni 10
+deneme metni 20
