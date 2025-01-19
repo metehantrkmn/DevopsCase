@@ -12,17 +12,23 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Set up kubectl
-        uses: azure/k8s-set-context@v1
-        with:
-          kubeconfig: ${{ secrets.KUBE_CONFIG }}
+      - name: Install kubectl
+        uses: azure/setup-kubectl@v3
+        
+      - name: Create kubeconfig
+        run: |
+          mkdir -p $HOME/.kube
+          echo "${{ secrets.KUBE_CONFIG }}" > $HOME/.kube/config
+          chmod 600 $HOME/.kube/config
 
       - name: Configure kubectl for ngrok
         run: |
           kubectl config set-cluster docker-desktop \
             --server=https://${{ secrets.NGROK_URL }} \
-            --insecure-skip-tls-verify=true
-          kubectl config use-context docker-desktop
+            --insecure-skip-tls-verify=true \
+            --kubeconfig=$HOME/.kube/config
+          
+          kubectl config use-context docker-desktop --kubeconfig=$HOME/.kube/config
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
@@ -42,5 +48,5 @@ jobs:
 
       - name: Deploy to Kubernetes
         run: |
-          kubectl apply -f kubernetes/deployment.yaml
-          kubectl apply -f kubernetes/ingress.yaml
+          kubectl apply -f kubernetes/deployment.yaml --kubeconfig=$HOME/.kube/config
+          kubectl apply -f kubernetes/ingress.yaml --kubeconfig=$HOME/.kube/config
