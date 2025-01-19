@@ -18,7 +18,7 @@ Access from browser using localhost/
 
 localhost/
 
-To create an environment where development teams can work in an organized and collaborative manner, efforts were made to automate the deployment process. In this context, clusters named **dev**, **test**, and **production** were created to provide teams with independent environments where they could conduct development, testing, and deployment processes incrementally. Although various isolation levels such as **namespaces** or **worker nodes** were considered, it was decided to use separate **clusters** for each environment, especially taking into account the isolation and resources required for production environments.
+To create an environment where development teams can work in an organized and collaborative manner, efforts were made to automate the deployment process. In this context, clusters named **dev**, **test**, and **production** were planned to be created to provide teams with independent environments where they could conduct development, testing, and deployment processes incrementally. Although various isolation levels such as **namespaces** or **worker nodes** were considered, it was decided to use separate **clusters** for each environment, especially taking into account the isolation and resources required for production environments.
 
 For **push** operations to the **dev** and **test** branches, deployments were planned to be executed directly in their respective environments. Additionally, the product would be moved between environments for branch merges.
 
