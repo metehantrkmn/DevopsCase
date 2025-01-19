@@ -40,4 +40,4 @@ In the scenario where Jenkins was used locally, the process failed at the deploy
 
 ![Screenshot 2025-01-19 at 18.13.57.png](2048%20Deployment%20Case%20Study%2017f6d1db3b1880b2928ad6cd2942c1ca/Screenshot_2025-01-19_at_18.13.57.png)
 
-![Screenshot 2025-01-19 at 19.16.18.png](2048 Deployment Case Study 17f6d1db3b1880b2928ad6cd2942c1ca/Screenshot 2025-01-19 at 19.16.18.png)
+![Screenshot 2025-01-19 at 19.16.18.png](2048%20Deployment%20Case%20Study%2017f6d1db3b1880b2928ad6cd2942c1ca/Screenshot 2025-01-19 at 19.16.18.png)
