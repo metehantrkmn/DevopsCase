@@ -19,14 +19,21 @@ jobs:
           echo "${{ secrets.KUBE_CONFIG }}" > $HOME/.kube/config
           chmod 600 $HOME/.kube/config
           
-          # Update the server URL while keeping credentials
-          kubectl config set-cluster $(kubectl config current-context) \
-            --server=https://${{ secrets.NGROK_URL }} \
+          # Get the current cluster name
+          CLUSTER_NAME=$(kubectl config current-context)
+          
+          # Remove any 'https://' prefix from NGROK_URL if present
+          CLEAN_NGROK_URL=$(echo "${{ secrets.NGROK_URL }}" | sed 's|^https://||')
+          
+          # Update the server URL
+          kubectl config set-cluster ${CLUSTER_NAME} \
+            --server="https://${CLEAN_NGROK_URL}" \
             --insecure-skip-tls-verify=true
 
       - name: Verify kubectl configuration
         run: |
           echo "Verifying cluster connection..."
+          echo "Using API server: $(kubectl config view --minify -o jsonpath='{.clusters[0].cluster.server}')"
           kubectl cluster-info
           echo "Current context:"
           kubectl config current-context
