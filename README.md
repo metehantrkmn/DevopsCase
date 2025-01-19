@@ -1,1 +1,3 @@
 # DevopsCase
+
+deneme metni
