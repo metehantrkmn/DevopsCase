@@ -38,7 +38,6 @@ Using **Jenkins**, a method was tested where deployment could be triggered loca
 
 In the scenario where Jenkins was used locally, the process failed at the deployment stage due to unsuccessful authentication, similar to the issue encountered with GitHub Actions.
 
-Buraya ekleme yapıyorumasf
 
 ![Screenshot 2025-01-19 at 18.13.57.png](2048%20Deployment%20Case%20Study%2017f6d1db3b1880b2928ad6cd2942c1ca/Screenshot_2025-01-19_at_18.13.57.png)
 ![Screenshot 2025-01-19 at 19.16.18.png](https://github.com/metehantrkmn/DevopsCase/blob/e8c40ce2ed3399f57ea17fcfef66747ab144e5c9/2048%20Deployment%20Case%20Study%2017f6d1db3b1880b2928ad6cd2942c1ca/Screenshot%202025-01-19%20at%2019.16.18.png)
