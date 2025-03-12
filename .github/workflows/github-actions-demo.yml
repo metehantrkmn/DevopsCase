@@ -21,7 +21,7 @@ jobs:
         run: docker build -t metehan1171/devops-case:${{ github.sha }} .
 
       - name: Push Docker image with PR commit SHA
-        run: docker push my-dockerhub-username/my-app:${{ github.sha }}
+        run: docker push metehan1171/devops-case:${{ github.sha }}
 
       - name: Notify Slack
         run: |
