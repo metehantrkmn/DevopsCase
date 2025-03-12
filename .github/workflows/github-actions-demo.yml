@@ -6,14 +6,10 @@ on:
 
 jobs:
   build-and-push:
-    name: Build and Push Docker Image
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
+        uses: actions/checkout@v4
 
       - name: Login to Docker Hub
         uses: docker/login-action@v1
@@ -28,35 +24,14 @@ jobs:
           push: true
           tags: metehan1171/devops-case:latest
 
-  deploy:
-    name: Deploy to Kubernetes
-    needs: build-and-push
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
+      - name: Build Docker image with PR commit SHA
+        run: docker build -t metehan1171/devops-case::${{ github.sha }} .
 
-      - name: Install kubectl
-        uses: azure/setup-kubectl@v3
-        
-      - name: Setup kube config
-        run: |
-          mkdir -p $HOME/.kube
-          echo "${{ secrets.KUBE_CONFIG }}" > $HOME/.kube/config
-          chmod 600 $HOME/.kube/config
-          
-          # Get the current cluster name
-          CLUSTER_NAME=$(kubectl config current-context)
-          
-          # Remove any 'https://' prefix from NGROK_URL if present
-          CLEAN_NGROK_URL=$(echo "${{ secrets.NGROK_URL }}" | sed 's|^https://||')
-          
-          # Update the server URL
-          kubectl config set-cluster ${CLUSTER_NAME} \
-            --server="https://${CLEAN_NGROK_URL}" \
-            --insecure-skip-tls-verify=true
+      - name: Push Docker image with PR commit SHA
+        run: docker push my-dockerhub-username/my-app:${{ github.sha }}
 
-      - name: Deploy to Kubernetes
+      - name: Notify Slack
         run: |
-          kubectl apply -f ./kubernetes/deployment.yaml --validate=false
-          kubectl apply -f ./kubernetes/ingress.yaml --validate=false
+          curl -X POST -H 'Content-type: application/json' \
+          --data '{"text": "🚀 New image built and pushed: my-dockerhub-username/my-app:${{ github.sha }}"}' \
+          ${{ secrets.SLACK_WEBHOOK_URL }}
