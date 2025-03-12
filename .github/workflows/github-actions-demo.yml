@@ -26,5 +26,5 @@ jobs:
       - name: Notify Slack
         run: |
           curl -X POST -H 'Content-type: application/json' \
-          --data '{"text": "🚀 New image built and pushed: my-dockerhub-username/my-app:${{ github.sha }}"}' \
+          --data '{"text": "🚀 New image built and pushed: metehan1171/devops-case:${{ github.sha }}"}' \
           ${{ secrets.SLACK_WEBHOOK_URL }}
